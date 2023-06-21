@@ -12,3 +12,6 @@ But in a nutshell, you need to have an OpenAI account. After that head to your A
 
 ## Support me
 [<img src="https://cdn.discordapp.com/attachments/1096788658566209546/1121171401995472946/cup-borders.png">](https://ko-fi.com/robodoc)
+
+## Credits
+### [Betalgo's OpenAI SDK](https://github.com/betalgo/openai)
