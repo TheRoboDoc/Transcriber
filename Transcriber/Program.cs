@@ -11,7 +11,22 @@ namespace Transcriber
     {
         static void Main()
         {
-            MainAsync().GetAwaiter().GetResult();
+            while (true)
+            {
+                MainAsync().GetAwaiter().GetResult();
+
+                Console.Write("\n\nDo you want to run again(Y/n)?: ");
+                string? choice = Console.ReadLine();
+
+                if (choice == "n")
+                {
+                    break;
+                }
+                else
+                {
+                    Console.Clear();
+                }
+            }
         }
 
         static async Task MainAsync()
