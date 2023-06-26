@@ -223,7 +223,7 @@ namespace Transcriber
                         if (fileSizeInMegabytes > 25)
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine($"Rejected: {file.Name} | file size is above {25} MB");
+                            Console.WriteLine($"Rejected: {file.Name} | file size is above 25 MB");
                             Console.ResetColor();
                         }
                         else
