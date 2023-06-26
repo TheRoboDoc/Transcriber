@@ -4,11 +4,14 @@ using OpenAI.ObjectModels;
 using OpenAI.ObjectModels.RequestModels;
 using OpenAI.ObjectModels.ResponseModels;
 using OpenAI.ObjectModels.ResponseModels.ModelResponseModels;
+using System.Net.NetworkInformation;
 
 namespace Transcriber
 {
     internal class Program
     {
+        const string address = "openai.com";
+
         static void Main()
         {
             while (true)
@@ -31,6 +34,11 @@ namespace Transcriber
 
         static async Task MainAsync()
         {
+            if (!CheckOpenAIConnection())
+            {
+                return;
+            }
+
             OpenAIService openAIService = await FetchAPI();
 
             List<FileInfo> files = FetchFiles();
@@ -52,6 +60,45 @@ namespace Transcriber
             }
 
             await TranscribeAll(files, openAIService);
+        }
+
+        static bool CheckOpenAIConnection()
+        {
+            Console.WriteLine("Checking connection to openai.com...");
+
+            try
+            {
+                using Ping ping = new();
+
+                const int timeout = 3000;
+
+                PingReply openAIReply = ping.Send(address, timeout);
+
+                if (openAIReply.Status == IPStatus.Success)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Connection OK");
+                    Console.ResetColor();
+
+                    return true;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Connection FAIL");
+                    Console.ResetColor();
+
+                    return false;
+                }
+            }
+            catch
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Connection FAIL");
+                Console.ResetColor();
+
+                return false;
+            }
         }
 
         static async Task TranscribeAll(List<FileInfo> files, OpenAIService openAIService)
