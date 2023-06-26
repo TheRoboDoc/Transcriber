@@ -207,6 +207,8 @@ namespace Transcriber
 
             DirectoryInfo directory = new(folderPath);
 
+            Console.WriteLine("Going through the files...");
+
             foreach (FileInfo file in directory.GetFiles())
             {
                 switch (file.Extension)
@@ -259,6 +261,8 @@ namespace Transcriber
                 Console.Write("\nProvide OpenAI API key: ");
 
                 apiKey = Console.ReadLine();
+
+                Console.WriteLine("Checking validity of the API key...");
 
                 if (string.IsNullOrEmpty(apiKey))
                 {
