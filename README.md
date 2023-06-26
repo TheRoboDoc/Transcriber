@@ -3,7 +3,7 @@
 Transcriber is a small program to transcribe all the given audio files in a folder to text using [OpenAI Whisper](https://openai.com/research/whisper)
 
 ## Install
-Download [**Transcriber.zip**](https://github.com/TheRoboDoc/Transcriber/releases/download/v1.0.1.2/Transcriber.zip) -> unzip -> run setup.exe
+Download [**Transcriber(version).zip**](https://github.com/TheRoboDoc/Transcriber/releases/download/v1.1.6.5/Transcriber_1_1_6_5.zip) -> unzip -> run setup.exe
 
 ## How to use
 You will need a valid OpenAI API key. A guide for that can be found [**here**](https://www.howtogeek.com/885918/how-to-get-an-openai-api-key/).
