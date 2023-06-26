@@ -234,6 +234,12 @@ namespace Transcriber
 
                             files.Add(file);
                         }
+                        break;
+
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"Rejected: {file.Name} | invalid file type");
+                        Console.ResetColor();
 
                         break;
                 }
