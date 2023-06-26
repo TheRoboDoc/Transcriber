@@ -7,8 +7,9 @@
     <Nullable>enable</Nullable>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
     <StartupObject>Transcriber.Program</StartupObject>
-    <ApplicationIcon>Transcriber.ico</ApplicationIcon>
     <PlatformTarget>x64</PlatformTarget>
+    <ApplicationIcon>Transcriber.ico</ApplicationIcon>
+    <IsPublishable>True</IsPublishable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
