@@ -192,9 +192,9 @@ namespace Transcriber
                     case ".mpeg":
                     case ".mpga":
                     case ".m4a":
-                    case "wav":
-                    case "webm":
-                        double fileSizeInMegabytes = file.Length / (1024 * 1024) ;
+                    case ".wav":
+                    case ".webm":
+                        double fileSizeInMegabytes = file.Length / (1024 * 1024);
                         
                         if (fileSizeInMegabytes > 25)
                         {
