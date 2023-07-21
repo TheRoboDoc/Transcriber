@@ -131,38 +131,9 @@ namespace Transcriber
                     return;
                 }
 
-                DirectoryInfo? successDir;
+                DirectoryInfo successDir = directoryInfo.CreateSubdirectory("output");
 
-                DirectoryInfo[]? dirs = directoryInfo?.GetDirectories("output");
-
-                if(dirs == null)
-                {
-                    Console.WriteLine("Creating output folder...");
-
-                    successDir = directoryInfo?.CreateSubdirectory("output");
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"Created {successDir?.FullName}\n");
-                    Console.ResetColor();
-                }
-                else if (dirs.Any())
-                {
-                    Console.WriteLine("Output directory already exists");
-
-                    successDir = dirs.First();
-                }
-                else
-                {
-                    Console.WriteLine("Creating output folder...");
-
-                    successDir = directoryInfo?.CreateSubdirectory("output");
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"Created {successDir?.FullName}\n");
-                    Console.ResetColor();
-                }
-
-                FileInfo fileInfo = new($"{successDir?.FullName}\\{file.Name}.txt");
+                FileInfo fileInfo = new($"{successDir.FullName}\\{file.Name}.txt");
 
                 if (fileInfo.Exists)
                 {
