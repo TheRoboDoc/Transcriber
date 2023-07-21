@@ -18,7 +18,7 @@ namespace Transcriber
             {
                 await MainAsync();
 
-                Console.Write("\n\nDo you want to run again(Y/n)?: ");
+                WriteInfo("\n\nDo you want to run again(Y/n)?: ");
                 string? choice = Console.ReadLine();
 
                 if (choice == "n")
@@ -43,7 +43,7 @@ namespace Transcriber
 
             List<FileInfo> files = FetchFiles();
 
-            bool proceed = true;
+            WriteInfo("\nContinue(Y/n)?: ");
 
             Console.Write("\nContinue(Y/n)?: ");
 
@@ -64,7 +64,7 @@ namespace Transcriber
 
         static bool CheckOpenAIConnection()
         {
-            Console.WriteLine("Checking connection to openai.com...");
+            WriteInfo("Checking connection to openai.com...");
 
             try
             {
@@ -76,58 +76,45 @@ namespace Transcriber
 
                 if (openAIReply.Status == IPStatus.Success)
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Connection OK");
-                    Console.ResetColor();
-
+                    WriteSuccess("Connection OK");
                     return true;
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Connection FAIL");
-                    Console.ResetColor();
-
+                    WriteError("Connection FAIL");
                     return false;
                 }
             }
             catch
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Connection FAIL");
-                Console.ResetColor();
-
+                WriteError($"Connection FAIL: {ex.Message}");
                 return false;
             }
         }
 
         static async Task TranscribeAll(List<FileInfo> files, OpenAIService openAIService)
         {
-            Console.WriteLine("Transcribing files...");
+            WriteInfo("Transcribing files...");
 
             foreach (FileInfo file in files)
             {
                 await Transcribe(file, openAIService);
             }
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Done transcribing all the files!\n");
-            Console.ResetColor();
+            WriteSuccess("Done transcribing all the files!\n");
         }
 
         static async Task Transcribe(FileInfo file, OpenAIService openAIService)
         {
             string fileName = file.Name;
 
-            Console.WriteLine($"Fetching {file.Name}...");
+            WriteInfo($"Fetching {file.Name}...");
 
             Stream fileStream = new FileStream(file.FullName, FileMode.Open);
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Done fetching!\n");
-            Console.ResetColor();
+            WriteSuccess("Done fetching!\n");
 
-            Console.WriteLine($"Transcribing {file.Name}...");
+            WriteInfo($"Transcribing {file.Name}...");
 
             AudioCreateTranscriptionResponse audioResult = await openAIService.Audio.CreateTranscription(new AudioCreateTranscriptionRequest()
             {
@@ -141,18 +128,13 @@ namespace Transcriber
 
             if (audioResult.Successful)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Done transcribing!\n");
-                Console.ResetColor();
+                WriteSuccess("Done transcribing!\n");
 
                 DirectoryInfo? directoryInfo = file.Directory;
 
                 if (directoryInfo == null)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Uknown error!");
-                    Console.ResetColor();
-
+                    WriteError("Unknown error!");
                     return;
                 }
 
@@ -194,28 +176,21 @@ namespace Transcriber
                     fileInfo.Delete();
                 }
 
-                Console.WriteLine($"Writing to {fileInfo.FullName}...");
+                WriteInfo($"Writing to {fileInfo.FullName}...");
 
                 File.WriteAllText(fileInfo.FullName, audioResult.Text);
 
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Done writing!\n");
-                Console.ResetColor();
+                WriteSuccess("Done writing!\n");
             }
             else
             {
                 if (audioResult.Error == null)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Unknown error!\n");
-                    Console.ResetColor();
-
+                    WriteError("Unknown error!\n");
                     return;
                 }
 
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"{audioResult.Error.Code}: {audioResult.Error.Message}\n");
-                Console.ResetColor();
+                WriteError($"{audioResult.Error.Code}: {audioResult.Error.Message}\n");
             }
         }
 
@@ -225,16 +200,13 @@ namespace Transcriber
 
             do
             {
-                Console.Write("\nGive folder path to fetch files from: ");
+                WriteInfo("\nGive folder path to fetch files from: ");
 
                 folderPath = Console.ReadLine();
 
                 if (string.IsNullOrEmpty(folderPath))
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Invalid path!");
-                    Console.ResetColor();
-
+                    WriteError("Invalid path!");
                     continue;
                 }
 
@@ -254,7 +226,7 @@ namespace Transcriber
 
             DirectoryInfo directory = new(folderPath);
 
-            Console.WriteLine("Going through the files...");
+            WriteInfo("Going through the files...");
 
             foreach (FileInfo file in directory.GetFiles())
             {
@@ -271,25 +243,17 @@ namespace Transcriber
                         
                         if (fileSizeInMegabytes > 25)
                         {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine($"Rejected: {file.Name} | file size is above 25 MB");
-                            Console.ResetColor();
+                            WriteError($"Rejected: {file.Name} | file size is above 25 MB");
                         }
                         else
                         {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine($"Accpeted: {file.Name}");
-                            Console.ResetColor();
-
+                            WriteSuccess($"Accepted: {file.Name}");
                             files.Add(file);
                         }
                         break;
 
                     default:
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"Rejected: {file.Name} | invalid file type");
-                        Console.ResetColor();
-
+                        WriteError($"Rejected: {file.Name} | invalid file type");
                         break;
                 }
             }
@@ -305,18 +269,15 @@ namespace Transcriber
 
             do
             {
-                Console.Write("\nProvide OpenAI API key: ");
+                WriteInfo("\nProvide OpenAI API key: ");
 
                 apiKey = Console.ReadLine();
 
-                Console.WriteLine("Checking validity of the API key...");
+                WriteInfo("Checking validity of the API key...");
 
                 if (string.IsNullOrEmpty(apiKey))
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Invalid API key!");
-                    Console.ResetColor();
-
+                    WriteError("Invalid API key!");
                     continue;
                 }
 
@@ -333,10 +294,7 @@ namespace Transcriber
                 }
                 catch
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Invalid API key!");
-                    Console.ResetColor();
-
+                    WriteError("Invalid API key!");
                     continue;
                 }
 
@@ -350,27 +308,36 @@ namespace Transcriber
                 {
                     if (modelListResponse.Error == null)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Uknown Error!");
-                        Console.ResetColor();
-
+                        WriteError("Unknown Error!");
                         break;
                     }
 
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"{modelListResponse.Error.Code}: {modelListResponse.Error.Message}");
-                    Console.ResetColor();
-
+                    WriteError($"{modelListResponse.Error.Code}: {modelListResponse.Error.Message}");
                     continue;
                 }
 
             }while (true);
 
+        // Helper methods for colored console output
+        static void WriteSuccess(string message)
+        {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("API key accepted");
+            Console.WriteLine(message);
             Console.ResetColor();
+        }
 
-            return openAIService;
+        static void WriteError(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(message);
+            Console.ResetColor();
+        }
+
+        static void WriteInfo(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(message);
+            Console.ResetColor();
         }
     }
 }
