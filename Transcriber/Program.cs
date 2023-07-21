@@ -45,8 +45,6 @@ namespace Transcriber
 
             WriteInfo("\nContinue(Y/n)?: ");
 
-            Console.Write("\nContinue(Y/n)?: ");
-
             string? answer = Console.ReadLine();
 
             if (answer?.ToLower() == "n")
