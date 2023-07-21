@@ -116,7 +116,7 @@ namespace Transcriber
                 Model = Models.WhisperV1,
                 ResponseFormat = StaticValues.AudioStatics.ResponseFormat.Text
             });
-            
+
             fileStream.Close();
 
             if (audioResult.Successful)
@@ -195,7 +195,7 @@ namespace Transcriber
                     case ".wav":
                     case ".webm":
                         double fileSizeInMegabytes = file.Length / (1024 * 1024);
-                        
+
                         if (fileSizeInMegabytes > 25)
                         {
                             WriteError($"Rejected: {file.Name} | file size is above 25 MB");
@@ -234,7 +234,7 @@ namespace Transcriber
                     continue;
                 }
 
-                OpenAIService openAIService = new (new OpenAiOptions()
+                OpenAIService openAIService = new(new OpenAiOptions()
                 {
                     ApiKey = apiKey
                 });
