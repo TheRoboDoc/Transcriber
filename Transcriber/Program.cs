@@ -49,11 +49,6 @@ namespace Transcriber
 
             if (answer?.ToLower() == "n")
             {
-                proceed = false;
-            }
-
-            if (proceed == false)
-            {
                 return;
             }
 
@@ -202,18 +197,9 @@ namespace Transcriber
 
                 folderPath = Console.ReadLine();
 
-                if (string.IsNullOrEmpty(folderPath))
+                if (string.IsNullOrEmpty(folderPath) || !Directory.Exists(folderPath))
                 {
                     WriteError("Invalid path!");
-                    continue;
-                }
-
-                if (!Directory.Exists(folderPath))
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Invalid path!");
-                    Console.ResetColor();
-
                     continue;
                 }
 
