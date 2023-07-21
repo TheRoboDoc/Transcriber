@@ -218,8 +218,6 @@ namespace Transcriber
 
         static async Task<OpenAIService> FetchAPI()
         {
-            OpenAIService? openAIService;
-
             string? apiKey;
 
             do
@@ -236,12 +234,12 @@ namespace Transcriber
                     continue;
                 }
 
-                openAIService = new OpenAIService(new OpenAiOptions()
+                OpenAIService openAIService = new (new OpenAiOptions()
                 {
                     ApiKey = apiKey
                 });
 
-                ModelListResponse? modelListResponse;
+                ModelListResponse modelListResponse;
 
                 try
                 {
@@ -252,8 +250,6 @@ namespace Transcriber
                     WriteError("Invalid API key!");
                     continue;
                 }
-
-                
 
                 if (modelListResponse.Successful)
                 {
@@ -271,7 +267,15 @@ namespace Transcriber
                     continue;
                 }
 
-            }while (true);
+            } while (true);
+
+            WriteSuccess("API key accepted");
+
+            return new OpenAIService(new OpenAiOptions()
+            {
+                ApiKey = apiKey
+            });
+        }
 
         // Helper methods for colored console output
         static void WriteSuccess(string message)
