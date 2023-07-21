@@ -12,11 +12,11 @@ namespace Transcriber
     {
         const string Address = "openai.com";
 
-        static void Main()
+        static async Task Main()
         {
             while (true)
             {
-                MainAsync().GetAwaiter().GetResult();
+                await MainAsync();
 
                 Console.Write("\n\nDo you want to run again(Y/n)?: ");
                 string? choice = Console.ReadLine();
