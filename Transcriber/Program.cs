@@ -10,7 +10,7 @@ namespace Transcriber
 {
     internal class Program
     {
-        const string address = "openai.com";
+        const string Address = "openai.com";
 
         static void Main()
         {
@@ -70,9 +70,9 @@ namespace Transcriber
             {
                 using Ping ping = new();
 
-                const int timeout = 3000;
+                const int Timeout = 3000;
 
-                PingReply openAIReply = ping.Send(address, timeout);
+                PingReply openAIReply = ping.Send(Address, Timeout);
 
                 if (openAIReply.Status == IPStatus.Success)
                 {
