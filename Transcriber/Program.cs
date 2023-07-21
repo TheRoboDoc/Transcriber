@@ -78,7 +78,7 @@ namespace Transcriber
                     return false;
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 WriteError($"Connection FAIL: {ex.Message}");
                 return false;
