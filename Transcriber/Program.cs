@@ -21,7 +21,7 @@ namespace Transcriber
                 WriteInfo("\n\nDo you want to run again(Y/n)?: ");
                 string? choice = Console.ReadLine();
 
-                if (choice == "n")
+                if (choice?.ToLower() == "n")
                 {
                     break;
                 }
@@ -49,7 +49,7 @@ namespace Transcriber
 
             string? answer = Console.ReadLine();
 
-            if (answer == "n")
+            if (answer?.ToLower() == "n")
             {
                 proceed = false;
             }
